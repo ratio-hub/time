@@ -1,0 +1,110 @@
+# @ratio-hub/time
+
+Type-safe time library. Branded types prevent seconds/milliseconds mixups.
+
+## Install
+```
+bun add @ratio-hub/time
+```
+
+## Import
+```ts
+import { Time, Duration, dur } from "@ratio-hub/time";
+```
+
+## Time (instant)
+
+```ts
+// Create
+Time.now()                    // current
+Time.seconds(1704067200)      // from unix seconds
+Time.millis(1704067200000)    // from unix ms
+Time.date(new Date())         // from Date
+Time.iso("2024-01-01T00:00:00Z")
+Time.in("1h")                 // now + 1 hour
+Time.ago("30m")               // now - 30 min
+
+// Arithmetic (returns new Time)
+time.add("1h")
+time.subtract("30m")
+time.diff(other)              // returns Duration
+
+// Compare
+time.isBefore(other)          // boolean
+time.isAfter(other)
+time.equals(other)
+time.isPast()
+time.isFuture()
+time.isWithin("10m")          // within ±10m of now
+time.isWithin("1h", anchor)   // within ±1h of anchor
+
+// Expiration
+time.hasExpired()             // same as isPast()
+time.expiresWithin("5m")      // future but expires within 5m
+time.expiredWithin("10m")     // past, expired within last 10m
+
+// Output
+time.toSeconds()              // number (Seconds type)
+time.toMillis()               // number (Milliseconds type)
+time.toDate()                 // Date
+time.toISO()                  // "2024-01-01T00:00:00.000Z"
+time.toRelative()             // "in 5m" / "2h ago"
+```
+
+## Duration (length)
+
+```ts
+// Create
+dur("1h")                     // 1 hour
+dur("1h30m")                  // compound
+dur("1w2d")                   // 1 week 2 days
+Duration.hours(2)
+Duration.minutes(30)
+Duration.seconds(60)
+Duration.days(7)
+
+// Arithmetic (returns new Duration)
+dur("1h").add("30m")          // 1h30m
+dur("2h").subtract("30m")     // 1h30m
+dur("1h").multiply(2)         // 2h
+dur("1h").divide(2)           // 30m
+dur("-1h").abs()              // 1h
+dur("1h").negate()            // -1h
+
+// Compare
+dur("1h").equals("60m")       // true
+dur("2h").greaterThan("1h")   // true
+dur("30m").lessThan("1h")     // true
+dur("0s").isZero()
+dur("-1h").isNegative()
+dur("1h").isPositive()
+
+// Output
+dur("90m").toMillis()         // 5400000
+dur("90m").toSeconds()        // 5400
+dur("90m").toMinutes()        // 90
+dur("90m").toHours()          // 1.5
+dur("90m").humanize()         // "2h"
+```
+
+## Duration strings
+`1s` `5m` `2h` `3d` `1w` `6mo` `1y` `500ms`
+Compound: `1h30m` `1w2d`
+Case insensitive.
+
+## Common patterns
+
+```ts
+// JWT expiration check
+const exp = Time.seconds(jwt.exp);
+if (exp.hasExpired()) { /* refresh */ }
+if (exp.expiresWithin("5m")) { /* proactive refresh */ }
+
+// Rate limiting
+const last = Time.millis(timestamp);
+if (!last.isWithin("1s")) { /* allow request */ }
+
+// Cache TTL
+const cached = Time.millis(entry.ts);
+if (cached.add("15m").isPast()) { /* stale */ }
+```
