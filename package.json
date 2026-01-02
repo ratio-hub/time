@@ -1,0 +1,55 @@
+{
+  "name": "@ratio-hub/time",
+  "version": "1.0.0",
+  "description": "Type-safe time library for TypeScript. Branded types prevent mixing up seconds and milliseconds.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "rm -rf dist && bun build ./src/index.ts --outdir ./dist --target browser --format esm && tsc -p tsconfig.build.json",
+    "test": "bun test",
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "bun run build && bun run test"
+  },
+  "keywords": [
+    "time",
+    "duration",
+    "typescript",
+    "type-safe",
+    "branded-types",
+    "milliseconds",
+    "seconds",
+    "date",
+    "expiration"
+  ],
+  "author": "Ratio Labs",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ratio-hub/time"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
