@@ -191,7 +191,7 @@ describe('Integration Tests', () => {
         Duration.zero()
       );
 
-      expect(total.toHours()).toBeCloseTo(2.5, 1);
+      expect(total.toHours()).toBe(2); // 2h 30m floors to 2h
     });
 
     test('calculate remaining quota', () => {
@@ -199,7 +199,7 @@ describe('Integration Tests', () => {
       const used = dur('75h').add('30m');
       const remaining = monthlyQuota.subtract(used);
 
-      expect(remaining.toHours()).toBeCloseTo(24.5, 1);
+      expect(remaining.toHours()).toBe(24); // 24h 30m floors to 24h
       expect(remaining.humanize()).toBe('1d');
     });
 
@@ -248,8 +248,8 @@ describe('Integration Tests', () => {
         .subtract('15m')
         .toHours();
 
-      // (1h + 30m) * 2 - 15m = 3h - 15m = 2h 45m = 2.75h
-      expect(result).toBe(2.75);
+      // (1h + 30m) * 2 - 15m = 3h - 15m = 2h 45m = floors to 2h
+      expect(result).toBe(2);
     });
   });
 });

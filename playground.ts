@@ -2,6 +2,8 @@ import { Time, Duration, dur } from './src/index.ts';
 
 console.log('=== Time ===\n');
 
+console.log(Time.in('2m').toSeconds())
+
 // Creating times
 const now = Time.now();
 console.log('Time.now():', now.toISO());

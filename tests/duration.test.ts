@@ -178,17 +178,41 @@ describe('Duration', () => {
     });
 
     test('toHours', () => {
-      expect(dur('90m').toHours()).toBe(1.5);
+      expect(dur('90m').toHours()).toBe(1);
       expect(dur('2h').toHours()).toBe(2);
     });
 
     test('toDays', () => {
       expect(dur('48h').toDays()).toBe(2);
-      expect(dur('36h').toDays()).toBe(1.5);
+      expect(dur('36h').toDays()).toBe(1);
     });
 
     test('toWeeks', () => {
       expect(dur('14d').toWeeks()).toBe(2);
+    });
+
+    test('toSeconds() returns integer (no decimals)', () => {
+      expect(dur('90.5s').toSeconds()).toBe(90);
+      expect(Number.isInteger(dur('1m').toSeconds())).toBe(true);
+    });
+
+    test('internal ms is always integer', () => {
+      const d = Duration.seconds(1.5);
+      expect(Number.isInteger(d.toMillis())).toBe(true);
+    });
+
+    test('divide() keeps integer ms', () => {
+      const d = dur('10s').divide(3);
+      expect(Number.isInteger(d.toMillis())).toBe(true);
+    });
+
+    test('all output methods return integers', () => {
+      const d = dur('1.5h'); // 90 minutes = 5400000ms
+      expect(Number.isInteger(d.toSeconds())).toBe(true);
+      expect(Number.isInteger(d.toMinutes())).toBe(true);
+      expect(Number.isInteger(d.toHours())).toBe(true);
+      expect(Number.isInteger(d.toDays())).toBe(true);
+      expect(Number.isInteger(d.toWeeks())).toBe(true);
     });
   });
 

@@ -15,7 +15,7 @@ export class Time {
   readonly #ms: number; // Unix timestamp in milliseconds
 
   private constructor(ms: number) {
-    this.#ms = ms;
+    this.#ms = Math.floor(ms);
   }
 
   // ============================================
@@ -186,7 +186,7 @@ export class Time {
 
   /** Get the Unix timestamp in seconds (branded type) */
   toSeconds(): Seconds {
-    return asSeconds(this.#ms / MS_PER_SECOND);
+    return asSeconds(Math.floor(this.#ms / MS_PER_SECOND));
   }
 
   /** Get the Unix timestamp in milliseconds (branded type) */

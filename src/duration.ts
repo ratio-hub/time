@@ -22,7 +22,7 @@ export class Duration implements DurationLike {
   readonly #ms: number;
 
   private constructor(ms: number) {
-    this.#ms = ms;
+    this.#ms = Math.floor(ms);
   }
 
   // ============================================
@@ -166,27 +166,27 @@ export class Duration implements DurationLike {
 
   /** Get the duration in seconds (raw number) */
   toSeconds(): number {
-    return this.#ms / MS_PER_SECOND;
+    return Math.floor(this.#ms / MS_PER_SECOND);
   }
 
   /** Get the duration in minutes (raw number) */
   toMinutes(): number {
-    return this.#ms / MS_PER_MINUTE;
+    return Math.floor(this.#ms / MS_PER_MINUTE);
   }
 
   /** Get the duration in hours (raw number) */
   toHours(): number {
-    return this.#ms / MS_PER_HOUR;
+    return Math.floor(this.#ms / MS_PER_HOUR);
   }
 
   /** Get the duration in days (raw number) */
   toDays(): number {
-    return this.#ms / MS_PER_DAY;
+    return Math.floor(this.#ms / MS_PER_DAY);
   }
 
   /** Get the duration in weeks (raw number) */
   toWeeks(): number {
-    return this.#ms / MS_PER_WEEK;
+    return Math.floor(this.#ms / MS_PER_WEEK);
   }
 
   // ============================================

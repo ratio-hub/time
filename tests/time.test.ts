@@ -304,6 +304,17 @@ describe('Time', () => {
       const time = Time.iso('2024-01-01T00:00:00.000Z');
       expect(time.toString()).toBe('2024-01-01T00:00:00.000Z');
     });
+
+    test('toSeconds() returns integer (no decimals)', () => {
+      const time = Time.millis(1704067200538); // .538s remainder
+      expect(time.toSeconds() as number).toBe(1704067200);
+      expect(Number.isInteger(time.toSeconds())).toBe(true);
+    });
+
+    test('internal ms is always integer', () => {
+      const time = Time.seconds(1704067200.999);
+      expect(Number.isInteger(time.toMillis())).toBe(true);
+    });
   });
 
   describe('toRelative()', () => {
